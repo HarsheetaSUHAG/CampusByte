@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites - Owner Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function dismissFlashMessages() {
+            const flashMessages = document.querySelectorAll('.alert');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0'; // Fade out
+                    setTimeout(() => {
+                        message.style.display = 'none'; // Hide after fade
+                    }, 1000); // Wait for fade-out animation
+                }, 5000); // Auto-dismiss in 5 seconds
+            });
+        }
+        window.onload = dismissFlashMessages;
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h1>Campus Bites</h1>
+        </div>
+    </header>
+
+    <!-- Landing Page Layout -->
+    <main class="landing-container">
+        <!-- Left Section: Text Content -->
+        <div class="text-section">
+            <h1>Revolutionize Campus Dining with Campus Bites</h1>
+            <p>"Join Campus Bites and elevate your cafeteria! Manage your menu, track sales, and analyze peak hours with ease. Log in or register today to get started"</p>
+        </div>
+
+        <!-- Right Section: Forms Section -->
+        <div class="forms-section">
+            <div class="form-card">
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <!-- Owner Login Form -->
+                <div class="form-section" id="coordinator-login-section">
+                    <h2>Owner Login</h2>
+                    <form method="POST" action="{{ url_for('login_owner') }}">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+            
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+            
+                        <button type="submit">Login</button>
+                    </form>
+                    <div class="slider-bar">
+                        <span><a href="{{ url_for('register_owner') }}">Register</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="feature-section">
+        <h2 class="feature-section-title">Campus Bites: Empowering Business Owners</h2>
+        <div class="feature-cards-container">
+            <div class="feature-card">
+                <h3>Real-Time Sales Tracking</h3>
+                <ul>
+                    <li>Monitor sales with real-time updates.</li>
+                    <li>Track order trends effortlessly.</li>
+                    <li>Improve inventory management.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>Business Insights</h3>
+                <ul>
+                    <li>Gain insights into peak hours.</li>
+                    <li>Make data-driven decisions.</li>
+                    <li>Optimize staff and resources efficiently.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>Marketing & Promotions</h3>
+                <ul>
+                    <li>Attract customers with exclusive offers.</li>
+                    <li>Boost sales with targeted promotions.</li>
+                    <li>Enhance visibility with special discounts.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+            <p>Your campus, your food, your way.</p>
+            <div class="footer-links">
+                <a href="{{ url_for('index') }}">Home</a> | 
+                <a href="{{ url_for('about_us') }}">About Us</a> | 
+                <a href="{{ url_for('contact_us') }}">Contact Us</a> | 
+                <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

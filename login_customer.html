@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites - Customer Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <script>
+        function dismissFlashMessages() {
+            const flashMessages = document.querySelectorAll('.flash');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 1000);
+                }, 10000); // 10 seconds
+            });
+        }
+
+        window.onload = function () {
+            dismissFlashMessages();
+        };
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h1>Campus Bites</h1>
+        </div>
+    </header>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Landing Page Layout -->
+    <main class="landing-container">
+        <!-- Left Section: Text Content -->
+        <div class="text-section">
+            <h1>Order. Pick Up. Enjoy! Simplifying Your Campus Dining Experience!</h1>
+            <p>"Join the Campus Bites community effortlessly and explore our menu. Satisfy your cravings with just a few clicks—order, pick up, and enjoy!"</p>
+        </div>
+
+        <!-- Right Section: Forms Section -->
+        <div class="forms-section">
+            <div class="form-card">
+                <div class="form-section" id="student-login-section">
+                    <h2>Customer Login</h2>
+                    <form method="POST">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+
+                        <button type="submit">Login</button>
+                    </form>
+                    <div class="slider-bar">
+                        <span><a href="{{ url_for('register_customer') }}">Register</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+            <p>Your campus, your food, your way.</p>
+            <div class="footer-links">
+                <a href="{{ url_for('index') }}">Home</a> | 
+                <a href="{{ url_for('about_us') }}">About Us</a> | 
+                <a href="{{ url_for('contact_us') }}">Contact Us</a> | 
+                <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

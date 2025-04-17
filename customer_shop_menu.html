@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ shop.shop_name }} Menu | Campus Bites</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='your_css_file.css') }}">
+  <style>
+    body {
+      font-family:'Segoe UI',sans-serif;
+      background:#f9f9f9;
+      margin:0;
+      padding:0;
+    }
+
+    .back-link {
+      margin:1rem 2rem;
+      display:inline-block;
+      color:#2e7d32;
+      text-decoration:none;
+      font-weight:500;
+    }
+
+    .header {
+      text-align:center;
+      font-size:2rem;
+      margin:1.5rem 0 0.5rem;
+    }
+
+    .description {
+      text-align:center;
+      font-size:1rem;
+      color:#666;
+      margin-bottom:1rem;
+    }
+
+    .item-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:1.5rem;
+      padding:1rem 2rem;
+    }
+
+    .item-card {
+      background:#fff;
+      border-radius:1rem;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      padding:1rem;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .item-title {
+      font-size:1.2rem;
+      font-weight:600;
+      color:#333;
+    }
+
+    .item-category {
+      font-size:0.9rem;
+      color:#999;
+    }
+
+    .cook-info {
+      font-size:0.85rem;
+      color:#888;
+      margin:0.4rem 0;
+    }
+
+    .price {
+      font-size:1rem;
+      font-weight:500;
+      color:#2e7d32;
+      margin:0.5rem 0;
+    }
+
+    .serving-option {
+      font-size:0.9rem;
+      color:#555;
+      margin-top:0.25rem;
+    }
+
+    .add-btn {
+      margin-top:0.8rem;
+      background:#2e7d32;
+      color:white;
+      padding:0.6rem;
+      border:none;
+      border-radius:0.5rem;
+      cursor:pointer;
+      transition:background 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background:#1b5e20;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="{{ url_for('browse_shops') }}" class="back-link">← Back to Browse Shops</a>
+
+  <h1 class="header">{{ shop.shop_name }} Menu</h1>
+  <p class="description">{{ shop.description }}</p>
+
+  <div class="item-grid">
+    {% if menu_items %}
+      {% for item in menu_items %}
+      <div class="item-card">
+        <div>
+          <div class="item-title">{{ item.item_name }}</div>
+          <div class="item-category">{{ item.category }}</div>
+          <div class="cook-info">Cook Time: {{ item.cook_time }} mins</div>
+          <div class="cook-info">Spicy: {{ item.spicy_level }}, {{ item.popularity_tag }} | Discount: {{ item.discount }}%</div>
+          {% if item.serving_options %}
+            <div class="serving-option">
+              {{ item.serving_options[0].serving_size }} - ₹{{ item.serving_options[0].price }}
+            </div>
+          {% else %}
+            <div class="serving-option">No serving options</div>
+          {% endif %}
+        </div>
+        <form action="{{ url_for('add_to_cart', menu_item_id=item.id, serving_option_id=item.serving_options[0].id) }}" method="post">
+          <button type="submit" class="add-btn">Add to Cart</button>
+        </form>
+        
+      </div>
+      {% endfor %}
+    {% else %}
+      <p style="padding:1rem;">No items available in the menu.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

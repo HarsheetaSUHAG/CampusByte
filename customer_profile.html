@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Profile - Campus Bites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='op.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f3e8e2;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #5a4234;
+            color: #fff;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .logo h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .nav-actions a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 1rem;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 12px;
+        }
+
+        .flash {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .profile-status {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            background: #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 20px;
+            margin-top: 10px;
+        }
+
+        .progress {
+            background: #d8a47f;
+            color: white;
+            height: 100%;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        legend {
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 0 10px;
+            margin-bottom: 10px;
+            color: #5a4234;
+        }
+
+        fieldset {
+            border: 1px solid #d8a47f;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 1rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #d8a47f;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .back-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            background: #5a4234;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <h1>Campus Bites</h1>
+        </div>
+        <div class="nav-actions">
+            <a href="/customer_profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <section class="profile-status">
+            <h3>Profile Completion: {{ profile_completion }}%</h3>
+            <div class="progress-bar">
+                <div class="progress" style="width: {{ profile_completion }}%;">{{ profile_completion }}%</div>
+            </div>
+        </section>
+
+        <form method="POST">
+            <fieldset disabled>
+                <legend>Basic Details</legend>
+                <label>Name:</label>
+                <input type="text" value="{{ customer.name }}">
+                <label>Email:</label>
+                <input type="text" value="{{ customer.email }}">
+                <label>Campus:</label>
+                <input type="text" value="{{ customer.campus }}">
+            </fieldset>
+
+            <fieldset>
+                <legend>Additional Details</legend>
+                <label for="dob">Date of Birth:</label>
+<input type="date" id="dob" name="dob" value="{{ customer.dob }}" {% if dob_locked %}readonly{% endif %}>
+{% if dob_locked %}
+  <p style="color: #721c24; font-size: 0.9rem;">Note: Date of Birth is locked and cannot be edited once set.</p>
+{% else %}
+  <p style="color: #5a4234; font-size: 0.9rem;">Note: You can only set your Date of Birth once.</p>
+{% endif %}
+
+
+                <label for="phone_number">Phone Number:</label>
+                <input type="text" id="phone_number" name="phone_number" value="{{ customer.phone_number or '' }}">
+
+                <label for="payment_choice">Preferred Payment:</label>
+                <select id="payment_choice" name="payment_choice">
+                    <option value="">Select</option>
+                    <option value="COD" {% if customer.payment_choice=='COD' %}selected{% endif %}>Cash on Delivery
+                    </option>
+                    <option value="UPI" {% if customer.payment_choice=='UPI' %}selected{% endif %}>UPI</option>
+                </select>
+            </fieldset>
+
+            <button type="submit">Save Profile</button>
+            <a href="{{ url_for('customer_dashboard') }}" class="back-button">Back to Dashboard</a>
+        </form>
+    </div>
+</body>
+
+</html>

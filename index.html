@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites | Welcome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h1>Campus Bites</h1>
+        </div>
+    </header>
+
+    <!-- Landing Page Layout -->
+    <main class="landing-container">
+        <!-- Left Section: Welcome Text -->
+        <div class="text-section">
+            <h1>Welcome to Campus Bites</h1>
+            <p>Order. Pick Up. Enjoy! <br> Your campus dining, simplified.</p>
+            <h2>Start your journey:</h2>
+
+            <!-- Role Selection Buttons -->
+            <div class="button-group">
+                <!-- Navigate to Customer Login Page -->
+                <a href="{{ url_for('login_customer') }}" class="button-primary">I’m a Customer</a>
+                <!-- Navigate to Owner Login Page -->
+                <a href="{{ url_for('login_owner') }}" class="button-secondary">I’m a Shop Owner</a>
+            </div>
+        </div>
+
+        <!-- Right Section: Background Image -->
+        <div class="image-section">
+            <div class="overlay"></div>
+        </div>
+    </main>
+    <section class="feature-section">
+        <h2 class="feature-section-title">Campus Bites: Bringing Convenience to Your Dining</h2>
+        <div class="feature-cards-container">
+            <div class="feature-card">
+                <h3>Seamless Online Ordering</h3>
+                <ul>
+                    <li>Browse the menu effortlessly.</li>
+                    <li>Order in just a few clicks.</li>
+                    <li>Pick up your food with ease.</li>
+                    <li>Convenient for both customers and owners.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>Manage & Track Sales</h3>
+                <ul>
+                    <li>Owners can track sales in real-time.</li>
+                    <li>Gain insights into peak hours.</li>
+                    <li>Make informed business decisions.</li>
+                    <li>Customers enjoy fast and reliable service.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>Exclusive Discounts & Recommendations</h3>
+                <ul>
+                    <li>Enjoy tailored recommendations for customers.</li>
+                    <li>Attract customers with exclusive offers.</li>
+                    <li>Get personalized deals and discounts.</li>
+                    <li>Boost your reach and sales with promotions.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+            <p>Your campus, your food, your way.</p>
+            <div class="footer-links">
+                <a href="{{ url_for('index') }}">Home</a> | 
+                <a href="{{ url_for('about_us') }}">About Us</a> | 
+                <a href="{{ url_for('contact_us') }}">Contact Us</a> | 
+                <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>

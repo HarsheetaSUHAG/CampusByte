@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bites - Customer Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+            const message = document.getElementById('password-message');
+
+            if (!passwordPattern.test(password)) {
+                message.textContent = "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.";
+                return false;
+            } else {
+                message.textContent = "";
+                return true;
+            }
+        }
+
+        function validateForm() {
+            return validatePassword();
+        }
+
+        function dismissFlashMessages() {
+            const flashMessages = document.querySelectorAll('.flash');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0'; // Fade out
+                    setTimeout(() => {
+                        message.style.display = 'none'; // Hide after fade-out animation
+                    }, 1000); // Wait for fade-out effect
+                }, 10000); // 10 seconds delay
+            });
+        }
+
+        window.onload = function () {
+            dismissFlashMessages();
+        };
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h1>Campus Bites</h1>
+        </div>
+    </header>
+
+    <!-- Flash Messages Section -->
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Landing Page Layout -->
+    <main class="landing-container">
+        <!-- Left Section: Text Content -->
+        <div class="text-section">
+            <h1>Order. Pick Up. Enjoy! Simplifying Your Campus Dining Experience!</h1>
+            <p>"Join the Campus Bites community effortlessly and explore our menu. Satisfy your cravings with just a few clicks—order, pick up, and enjoy!"</p>
+        </div>
+
+        <!-- Right Section: Forms Section -->
+        <div class="forms-section">
+            <div class="form-card">
+                <div class="form-section" id="student-registration-section">
+                    <h2>Customer Registration</h2>
+
+                    <!-- Form to Send OTP -->
+                    <form method="POST" action="{{ url_for('send_otp_route') }}" id="otp-form">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+                        <button type="submit" id="send-otp">Send OTP</button>
+                    </form>
+
+                    <!-- Form to Register After OTP is Sent -->
+                    <form method="POST" action="{{ url_for('register_customer') }}" id="register-form" style="display: none;" onsubmit="return validateForm()">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+                        <div class="campus-section">
+                            <label for="campus-select">Select Campus:</label>
+                            <select id="campus-select" name="campus" required>
+                                <option value="">Select your campus</option>
+                                <option value="chandigarh-university">Chandigarh University</option>
+                            </select>
+                        </div>
+
+                        <label for="email-register">Email:</label>
+                        <input type="email" id="email-register" name="email" readonly>
+
+                        <label for="otp">Enter OTP:</label>
+                        <input type="text" id="otp" name="otp" placeholder="Enter the OTP sent to your email" required>
+
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" onkeyup="validatePassword()" placeholder="Create a strong password" required>
+                        <p id="password-message" style="color: red;"></p>
+
+                        <button type="submit">Register</button>
+                    </form>
+
+                    <div class="slider-bar">
+                        <span><a href="{{ url_for('login_customer') }}">Already registered? Login here</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="feature-section">
+        <h2 class="feature-section-title">Campus Bites: Elevating Your Dining Experience</h2>
+        <div class="feature-cards-container">
+            <div class="feature-card">
+                <h3>Quick Ordering</h3>
+                <ul>
+                    <li>Browse the menu effortlessly.</li>
+                    <li>Order in just a few clicks.</li>
+                    <li>Pick up your food with ease.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>Fast & Reliable Service</h3>
+                <ul>
+                    <li>Enjoy quick and efficient service.</li>
+                    <li>Never miss a meal with timely pickups.</li>
+                    <li>Get real-time updates on your order status.</li>
+                </ul>
+            </div>
+            <div class="feature-card">
+                <h3>Exclusive Deals</h3>
+                <ul>
+                    <li>Personalized meal picks.</li>
+                    <li>Unlock exclusive student discounts.</li>
+                    <li>Save more with special offers and deals.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+            <p>Your campus, your food, your way.</p>
+            <div class="footer-links">
+                <a href="{{ url_for('index') }}">Home</a> | 
+                <a href="{{ url_for('about_us') }}">About Us</a> | 
+                <a href="{{ url_for('contact_us') }}">Contact Us</a> | 
+                <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Show the registration form after sending OTP
+        const otpButton = document.getElementById('send-otp');
+        const registerForm = document.getElementById('register-form');
+        const otpForm = document.getElementById('otp-form');
+
+        otpButton.addEventListener('click', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Disable the button to prevent multiple clicks
+            otpButton.disabled = true;
+            otpButton.textContent = "Sending...";
+
+            // Send the email to the server to trigger OTP
+            const email = document.getElementById('email').value;
+            fetch("{{ url_for('send_otp_route') }}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `email=${encodeURIComponent(email)}`,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("OTP sent to your email!");
+                        otpForm.style.display = 'none';
+                        registerForm.style.display = 'block';
+                        document.getElementById('email-register').value = email;
+                    } else {
+                        alert("Failed to send OTP. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error sending OTP:", error);
+                    alert("An error occurred while sending OTP. Please try again.");
+                })
+                .finally(() => {
+                    otpButton.disabled = false;
+                    otpButton.textContent = "Send OTP";
+                });
+        });
+    </script>
+</body>
+</html>

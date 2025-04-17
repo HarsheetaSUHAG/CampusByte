@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Orders | Campus Bites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='your_css_file.css') }}">
+    <style>
+        body {
+            font-family:'Segoe UI',sans-serif;
+            background:#f9f9f9;
+            margin:0;
+            padding:0;
+        }
+
+        .header {
+            text-align:center;
+            font-size:2rem;
+            margin:1.5rem 0;
+        }
+
+        .order-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+            gap:1.5rem;
+            padding:1rem 2rem;
+        }
+
+        .order-card {
+            background:white;
+            padding:1.2rem;
+            border-radius:1rem;
+            box-shadow:0 2px 6px rgba(0,0,0,0.1);
+            display:flex;
+            flex-direction:column;
+        }
+
+        .order-card p {
+            margin:0.4rem 0;
+            font-size:0.95rem;
+            color:#444;
+        }
+
+        ul {
+            margin:0.5rem 0;
+            padding-left:1.2rem;
+        }
+
+        .btn-form {
+            display:flex;
+            gap:0.5rem;
+            margin-top:1rem;
+        }
+
+        .btn-form button {
+            flex:1;
+            padding:0.5rem;
+            font-weight:500;
+            font-size:0.95rem;
+            border:none;
+            border-radius:0.4rem;
+            cursor:pointer;
+            transition:background 0.3s ease;
+        }
+
+        .btn-form button[type="submit"]:first-child {
+            background:#2e7d32;
+            color:white;
+        }
+
+        .btn-form button[type="submit"]:first-child:hover {
+            background:#1b5e20;
+        }
+
+        .btn-form button[type="submit"]:last-child {
+            background:#c62828;
+            color:white;
+        }
+
+        .btn-form button[type="submit"]:last-child:hover {
+            background:#b71c1c;
+        }
+
+        .back-link {
+            margin:1rem 2rem;
+            display:inline-block;
+            color:#2e7d32;
+            text-decoration:none;
+            font-weight:500;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('owner_dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+    <h1 class="header">New Orders</h1>
+
+    <div class="order-grid">
+        {% for order in pending_orders %}
+        <div class="order-card">
+            <p><strong>Customer:</strong> {{ order.customer.name }}</p>
+            <p><strong>Items:</strong></p>
+            <ul>
+                {% for item in order.items %}
+                    <li>{{ item.quantity }} x {{ item.name }} ({{ item.serving }}) - ₹{{ item.price }}</li>
+                {% endfor %}
+            </ul>
+            <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+            <div class="btn-form">
+                <form action="{{ url_for('accept_order',order_id=order.id) }}" method="post">
+                    <button type="submit">Accept</button>
+                </form>
+                <form action="{{ url_for('deny_order',order_id=order.id) }}" method="post">
+                    <button type="submit">Deny</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <p style="padding:1rem;">No new orders right now.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

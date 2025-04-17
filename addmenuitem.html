@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Menu Item - Campus Bites</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fef5f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #5a4234;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #5a4234;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .serving-option-group {
+            border: 1px dashed #ccc;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .add-serving {
+            background-color: #5a4234;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+
+        .submit-btn {
+            background-color: #5a4234;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #7a5946;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .back-link a {
+            color: #5a4234;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function addServingOption() {
+            const container = document.getElementById('serving-options');
+            const div = document.createElement('div');
+            div.className = 'serving-option-group';
+            div.innerHTML = `
+                <label>Serving Size:</label>
+                <select name="serving_size[]" required>
+                    <option value="">-- Select Size --</option>
+                    <option value="Small">Small</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Full">Full</option>
+                </select>
+                <label>Price (₹):</label>
+                <input type="number" name="price[]" step="0.01" required>
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</head>
+
+<body>
+    <header class="navbar">
+        <h1>Add Menu Item</h1>
+    </header>
+
+    <div class="container">
+        <form method="POST" action="{{ url_for('add_menu_item', shop_id=shop_id) }}">
+            <h2>Menu Item Details</h2>
+
+            <label>Item Name</label>
+            <input type="text" name="item_name" required>
+
+            <label>Item Photo (optional)</label>
+            <input type="file" name="item_photo" accept="image/*">
+
+            <label>Cook Time (in minutes)</label>
+            <input type="number" name="cook_time">
+
+            <label>Veg/Non-Veg</label>
+            <select name="type" required>
+                <option value="">-- Select Type --</option>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+            </select>
+
+            <label>Category</label>
+            <select name="category" required>
+                <option value="">-- Select Category --</option>
+                <option value="Pizza">Pizza</option>
+                <option value="Thali">Thali</option>
+                <option value="North Indian">North Indian</option>
+                <option value="Dosa">Dosa</option>
+                <option value="Momos">Momos</option>
+                <option value="Noodles">Noodles</option>
+                <option value="South Indian">South Indian</option>
+                <option value="Rolls">Rolls</option>
+                <option value="Burger">Burger</option>
+                <option value="Paratha">Paratha</option>
+                <option value="Cake">Cake</option>
+                <option value="Chinese">Chinese</option>
+                <option value="Paneer">Paneer</option>
+                <option value="Fried Rice">Fried Rice</option>
+                <option value="Sandwich">Sandwich</option>
+                <option value="Daal">Daal</option>
+                <option value="Sweets">Sweets</option>
+                <option value="Desserts">Desserts</option>
+                <option value="Khichdi">Khichdi</option>
+                <option value="Biryani">Biryani</option>
+                <option value="Juice">Juice</option>
+                <option value="Tea">Tea</option>
+                <option value="Lassi">Lassi</option>
+            </select>
+
+            <label>Discount (%)</label>
+            <input type="number" name="discount" step="0.01">
+
+            <label>Status</label>
+            <select name="status">
+                <option value="Available">Available</option>
+                <option value="Out of Stock">Out of Stock</option>
+            </select>
+
+            <label>Spicy Level (0-5)</label>
+            <input type="number" name="spicy_level" min="0" max="5">
+
+            <label>Popularity Tag</label>
+            <select name="popularity_tag">
+                <option value="">None</option>
+                <option value="Chef Special">Chef Special</option>
+                <option value="Restaurant Special">Restaurant Special</option>
+            </select>
+
+            <h2>Serving Options</h2>
+            <div id="serving-options">
+                <div class="serving-option-group">
+                    <label>Serving Size:</label>
+                    <select name="serving_size[]" required>
+                        <option value="">-- Select Size --</option>
+                        <option value="Small">Small</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Full">Full</option>
+                    </select>
+                    <label>Price (₹):</label>
+                    <input type="number" name="price[]" step="0.01" required>
+                </div>
+            </div>
+            <button type="button" class="add-serving" onclick="addServingOption()">+ Add Serving Option</button>
+            <br>
+            <div style="text-align:center;">
+                <button type="submit" class="submit-btn">Add Item</button>
+            </div>
+            
+        </form>
+
+        <div class="back-link">
+            <a href="{{ url_for('show_menu', shop_id=shop_id) }}">← Back to Menu</a>
+        </div>
+    </div>
+</body>
+
+</html>

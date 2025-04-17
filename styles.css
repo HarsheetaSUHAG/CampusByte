@@ -1,0 +1,562 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Poppins', sans-serif; /* Using Poppins for a modern font */
+    background-color: #f4f7fb;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Navbar Styling */
+.navbar {
+    background: linear-gradient(135deg, #4c6ef5, #4267e3);
+    color: white;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    transition: background 0.4s ease;
+}
+
+.navbar:hover {
+    background: linear-gradient(135deg, #4267e3, #4c6ef5);
+}
+
+.navbar .logo h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.navbar .logo h1 span {
+    color: #fbc02d; /* Bright yellow for contrast */
+}
+
+/* Landing Page Layout */
+.landing-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5rem 5%;
+    gap: 5rem;
+    height: 80vh;
+    transition: all 0.5s ease;
+}
+
+.landing-container:hover {
+    transform: scale(1.02);
+}
+
+.text-section {
+    
+    width: 50%;
+    padding: 2rem;
+    text-align: left;
+    animation: fadeInLeft 1s ease-in-out;
+}
+
+.text-section h1 {
+    font-size: 3.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+    animation: slideIn 1.2s ease-out;
+}
+
+.text-section p {
+    font-size: 1.3rem;
+    color: #555; /* Subtle gray for readability */
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.text-section h2 {
+    font-size: 2.3rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+/* Button Group */
+
+
+.button-group {
+    display: flex;
+    gap: 2rem;
+    animation: fadeInUp 1.5s ease-in-out;
+}
+
+.button-primary,
+.button-secondary {
+    padding: 15px 35px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    font-weight: 600;
+    display: inline-block;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.button-primary {
+    background: linear-gradient(45deg, #1e88e5, #42a5f5);
+}
+
+.button-primary:hover {
+    background: linear-gradient(45deg, #1565c0, #2196f3);
+    transform: translateY(-4px);
+}
+
+.button-secondary {
+    background: linear-gradient(45deg, #00acc1, #26c6da);
+}
+
+.button-secondary:hover {
+    background: linear-gradient(45deg, #00838f, #00bcd4);
+    transform: translateY(-4px);
+}
+
+
+
+/* Slider Bar for Switching Login/Register */
+.slider-bar {
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color:#4267e3;
+    transition: all 0.3s ease;
+}
+
+.slider-bar:hover {
+    color: #4267e3;
+}
+
+
+/* Apply styles to the <a> tag inside .slider-bar */
+.slider-bar a {
+    color: inherit; /* Inherit the color from the parent */
+    text-decoration: none; /* Remove underline */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+/* Hover effect for the anchor tag */
+.slider-bar a:hover {
+    color: #4267e3;
+}
+
+
+/* Image Section */
+
+.image-section {
+    position: relative;
+    width: 55%;
+    height: 550px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.image-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    animation: imageSlide 12s infinite;
+    border-radius: 15px;
+}
+
+@keyframes imageSlide {
+    0% { background-image: url('./image1.jpeg'); }
+    33% { background-image: url('./image2.jpeg'); }
+    66% { background-image: url('./image3.jpeg'); }
+    100% { background-image: url('./image1.jpeg'); }
+}
+
+
+
+
+
+
+
+/* Dropdown List Styling */
+.campus-section label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.campus-section select {
+    appearance: none;
+    background-color: #f9f9f9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23ccc' d='M2 0L0 2h4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px;
+}
+
+.form-section button {
+    margin-bottom: 10px;
+    width: auto;
+    padding: 15px;
+    background-color: #1e88e5;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.form-section button:hover {
+    background-color: #1565c0;
+    transform: translateY(-4px);
+}
+
+.slider-bar {
+    text-align: center;
+    margin-top: 15px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #1e88e5;
+    transition: all 0.3s ease;
+}
+
+.slider-bar:hover {
+    color: #1565c0;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #1c2331;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 4rem;
+    font-size: 1.1rem;
+}
+
+/* Form Card Styling */
+.form-card {
+    background: #fff;
+    padding: 20px; /* Reduced padding */
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    max-width: 450px;
+    margin: 0 auto;
+    margin-right: 70px;
+    animation: fadeInUp 1s ease-in-out;
+}
+
+.form-section h2 {
+    font-size: 1.8rem; /* Slightly smaller heading */
+    color: #333;
+    margin-bottom: 1rem; /* Reduced margin */
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-section input,
+.form-section select {
+    width: 100%;
+    padding: 8px 15px; /* Reduced padding */
+    margin: 8px 0; /* Reduced margin */
+    border-radius: 6px; /* Slightly smaller radius */
+    border: 1.5px solid #ccc; /* Thinner border */
+    font-size: 0.9rem; /* Reduced font size */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-section input:focus,
+.form-section select:focus {
+    border-color: #1e88e5;
+    box-shadow: 0 0 5px rgba(30, 136, 229, 0.5);
+}
+
+.form-section .campus-section {
+    margin-bottom: 8px; /* Reduced spacing */
+}
+
+.form-section .email-section {
+    margin-bottom: 8px; /* Reduced spacing */
+}
+
+.form-section button {
+    margin-bottom: 8px; /* Reduced margin */
+    width: 100%;
+    padding: 10px; /* Reduced padding */
+    background-color: #1e88e5;
+    color: white;
+    font-size: 0.8rem; /* Slightly smaller font */
+    border: none;
+    border-radius: 40px; /* Compact button shape */
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.form-section button:hover {
+    background-color: #1565c0;
+    transform: translateY(-3px);
+}
+
+.otp-section input {
+    margin-bottom: 10px; /* Reduced margin */
+}
+
+.slider-bar {
+    text-align: center;
+    margin-top: 5px; /* Reduced margin */
+    cursor: pointer;
+    font-size: 1rem; /* Smaller text size */
+    color: #1e88e5;
+    transition: all 0.3s ease;
+}
+
+.slider-bar:hover {
+    color: #1565c0;
+}
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Feature Section Styling */
+.feature-section {
+    padding: 60px 20px;
+    background-color: #f9f9f9;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.feature-section-title {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #333;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.feature-cards-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+/* Feature Card Styling */
+.feature-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    text-align: center;
+    width: 30%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.feature-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.feature-card h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-transform: capitalize;
+    transition: color 0.3s ease;
+}
+
+.feature-card p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Hover Effect */
+.feature-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+    background-color: #f2f2f2;
+}
+
+.feature-card:hover h3 {
+    color: #4267e3; /* Change color on hover */
+}
+
+.feature-card:hover img {
+    transform: scale(1.1); /* Slight zoom on the image */
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 1024px) {
+    .feature-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-card {
+        width: 100%;
+    }
+}
+
+/* Adding subtle background gradient effect */
+.feature-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #2a9d8f, #f4a261);
+    opacity: 0.1;
+    z-index: -1;
+}
+
+/* Adding animation to feature cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card {
+    animation: fadeInUp 0.6s ease-in-out;
+}
+
+/* Apply padding to section to make it more spacious */
+.feature-card ul {
+    padding-left: 0;
+    list-style-type: none;
+    color: #444;
+}
+
+.feature-card ul li {
+    font-size: 16px;
+    margin-bottom: 12px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.feature-card ul li:before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    color: #2a9d8f;
+}
+
+
+/* Footer */
+footer {
+    background-color: #2c3e50;
+    color: #fff;
+    text-align: center;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+footer a {
+    color: #f1c40f;
+    margin: 0 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+footer .footer-links {
+    margin-top: 1rem;
+}
+
+
+
+
+.dashboard-sections {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.shops-section, .orders-section, .cart-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 48%;
+}
+
+.shops-list, .orders-list, .cart-items {
+    margin-top: 1rem;
+}
+
+.shops-list div, .orders-list div, .cart-items div {
+    background: #f9f9f9;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+button {
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #1565c0;
+}

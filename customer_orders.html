@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Orders | Campus Bites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='your_css_file.css') }}">
+    <style>
+        body {
+            font-family:'Segoe UI',sans-serif;
+            background:#f9f9f9;
+            margin:0;
+            padding:0;
+        }
+
+        .header {
+            text-align:center;
+            font-size:2rem;
+            margin:1.5rem 0;
+        }
+
+        .order-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+            gap:1.5rem;
+            padding:1rem 2rem;
+        }
+
+        .order-card {
+            background:white;
+            padding:1.2rem;
+            border-radius:1rem;
+            box-shadow:0 2px 6px rgba(0,0,0,0.1);
+            display:flex;
+            flex-direction:column;
+        }
+
+        .order-card p {
+            margin:0.5rem 0;
+            font-size:0.95rem;
+            color:#444;
+        }
+
+        .status {
+            font-weight:600;
+            color:#1565c0;
+        }
+
+        .timer {
+            font-size:1rem;
+            font-weight:500;
+            color:#2e7d32;
+        }
+
+        .top-links {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:1rem 2rem;
+        }
+
+        .top-link {
+            color:#2e7d32;
+            text-decoration:none;
+            font-weight:500;
+            font-size:0.95rem;
+            background:#e8f5e9;
+            padding:0.5rem 1rem;
+            border-radius:0.5rem;
+            transition:background 0.3s ease;
+        }
+
+        .top-link:hover {
+            background:#c8e6c9;
+        }
+
+        .item-list {
+            padding-left:1.2rem;
+            margin:0.5rem 0;
+        }
+
+        .item-list li {
+            font-size:0.9rem;
+            color:#333;
+            margin-bottom:0.3rem;
+        }
+
+        .total {
+            margin-top:0.5rem;
+            font-weight:600;
+            color:#000;
+        }
+
+        .no-orders {
+            text-align:center;
+            font-size:1.1rem;
+            padding:2rem;
+            color:#777;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-links">
+        <a href="{{ url_for('customer_dashboard') }}" class="top-link">← Back to Dashboard</a>
+        <a href="{{ url_for('view_cart') }}" class="top-link">🛒 View Cart</a>
+    </div>
+
+    <h1 class="header">Your Orders</h1>
+
+    {% if orders %}
+    <div class="order-grid">
+        {% for order in orders %}
+        <div class="order-card">
+            <p><strong>Shop:</strong> {{ order.shop.name }}</p>
+            <p><strong>Status:</strong> <span class="status">{{ order.status }}</span></p>
+
+            {% if order.items %}
+            <div>
+                <strong>Items:</strong>
+                <ul class="item-list">
+                    {% set ns = namespace(total=0) %}
+                    {% for item in order.items %}
+                        {% set subtotal = item.price * item.quantity %}
+                        <li>
+                            {{ item.quantity }} × {{ item.name }} ({{ item.serving }}) - ₹{{ subtotal }}
+                        </li>
+                        {% set ns.total = ns.total + subtotal %}
+                    {% endfor %}
+                </ul>
+                <p class="total">Total: ₹{{ ns.total }}</p>
+            </div>
+            {% endif %}
+
+            {% if order.status == 'accepted' and order.wait_time %}
+            <p class="timer"><strong>Wait Time:</strong> <span id="timer-{{ order.id }}"></span></p>
+            <script>
+                let waitTime{{ order.id }}={{ order.wait_time }}*60;
+                let timerId{{ order.id }}=setInterval(()=>{
+                    if(waitTime{{ order.id }}<0){
+                        clearInterval(timerId{{ order.id }});
+                        document.getElementById("timer-{{ order.id }}").innerText="Ready!";
+                        return;
+                    }
+                    let mins=Math.floor(waitTime{{ order.id }}/60);
+                    let secs=waitTime{{ order.id }}%60;
+                    document.getElementById("timer-{{ order.id }}").innerText=`${mins}m ${secs}s`;
+                    waitTime{{ order.id }}--;
+                },1000);
+            </script>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="no-orders">You haven’t placed any orders yet.</p>
+    {% endif %}
+</body>
+</html>

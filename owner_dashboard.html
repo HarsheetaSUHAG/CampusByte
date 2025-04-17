@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Bites - Owner Dashboard</title>
+  <!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3e8e2;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #5a4234;
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-actions a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-actions a:hover {
+      color: #d8a47f;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* Flash Messages */
+    .flash-messages {
+      width: 100%;
+      max-width: 600px;
+      margin: 10px auto;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-bottom: 10px;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .alert-success {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .alert-danger {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .alert-info {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      color: #5a4234;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      margin-top: 10px;
+      background: #d8a47f;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background: #b98966;
+    }
+
+    footer {
+      background-color: #5a4234;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #d8a47f;
+    }
+
+  </style>
+
+  <script>
+    function dismissFlashMessages() {
+      const flashMessages = document.querySelectorAll('.alert');
+      flashMessages.forEach(message => {
+        setTimeout(() => {
+          message.style.opacity = '0'; // Fade out
+          setTimeout(() => {
+            message.style.display = 'none'; // Hide after fade
+          }, 1000); // Wait for fade-out animation
+        }, 5000); // Auto-dismiss in 5 seconds
+      });
+    }
+    window.onload = dismissFlashMessages;
+  </script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <h1>Campus Bites</h1>
+    </div>
+    <div class="nav-actions">
+      <a href="/owner_profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Owner Dashboard</h1>
+
+    <!-- Flash Messages -->
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="dashboard">
+      <div class="card">
+        <h2>Create Shop</h2>
+        <p>Set up your shop and manage your menu items with ease.</p>
+        <a href="{{ url_for('create_shop') }}" class="btn">Create Shop</a>
+      </div>      
+      <div class="card">
+        <h2>View Cooking Queue</h2>
+        <p>Track ongoing orders and manage preparation times efficiently.</p>
+        <a href="{{ url_for('owner_orders') }}" class="btn">View Queue</a>
+      </div>
+      
+      <div class="card">
+        <h2>Your Shop</h2>
+        <p>Manage your shop and its menu.</p>
+        <a href="{{ url_for('manage_shop') }}" class="btn">Manage Shop</a>
+      </div>
+      <div class="card">
+        <h2>Orders</h2>
+        <p>Monitor all orders and their statuses.</p>
+        <button class="btn" onclick="location.href='/orders'">View Orders</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+    <div class="footer-links">
+      <a href="{{ url_for('index') }}">Home</a> | 
+      <a href="{{ url_for('about_us') }}">About Us</a> | 
+      <a href="{{ url_for('contact_us') }}">Contact Us</a> | 
+      <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>

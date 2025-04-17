@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browse Shops - Campus Bites</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f9f6f1, #fefefe);
+      color: #2c3e50;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #1c2331, #2c3e50);
+      color: #fff;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .logo h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-actions a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .nav-actions a:hover {
+      color: #ffd194;
+    }
+
+    .container {
+      max-width: 1200px; /* Increased container width */
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .flash-messages {
+      max-width: 600px;
+      margin: 1rem auto;
+      text-align: center;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .alert-success { background-color: #2ecc71; color: #fff; }
+    .alert-danger { background-color: #e74c3c; color: #fff; }
+    .alert-info { background-color: #3498db; color: #fff; }
+
+    .category-section {
+      display: flex;
+      overflow-x:auto;
+      padding: 1rem;
+      gap: 1rem;
+      background: #fff;
+      white-space: nowrap;
+      margin-top: 2rem;
+    }
+
+    .category-box {
+      flex: 0 0 auto;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      color: #2c3e50;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+    }
+
+    .category-box:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    }
+
+    .filter-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1.5rem;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 240px;
+      height: 50px;
+      background: #ddd;
+      border-radius: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      height: 100%;
+      width: 80px;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      border-radius: 25px;
+      transition: 0.3s ease;
+      z-index: 0;
+    }
+
+    .toggle-label {
+      flex: 1;
+      text-align: center;
+      z-index: 1;
+      cursor: pointer;
+      color: #444;
+    }
+
+    .selected {
+      color: white;
+      font-weight: bold;
+    }
+
+    .shop-list {
+      padding: 1rem;
+    }
+
+    .shop-card {
+      background: #ffffff;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .shop-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 0.5rem;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.5rem 0;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      color: #2c3e50;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    }
+
+    footer {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 4rem;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffd194;
+    }
+  </style>
+
+  <script>
+    function dismissFlashMessages() {
+      const flashMessages = document.querySelectorAll('.alert');
+      flashMessages.forEach(message => {
+        setTimeout(() => {
+          message.style.opacity = '0';
+          setTimeout(() => {
+            message.style.display = 'none';
+          }, 1000);
+        }, 5000);
+      });
+    }
+    window.onload = dismissFlashMessages;
+  </script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <h1>Campus Bites</h1>
+    </div>
+    <div class="nav-actions">
+      <a href="/customer_profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 style="text-align:center; margin-bottom: 1.5rem;">Browse Shops</h1>
+
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <section class="category-section">
+      {% for cat in [
+        'Pizza', 'Thali', 'North Indian', 'Dosa', 'Momos', 'Noodles', 'South Indian',
+        'Rolls', 'Burger', 'Paratha', 'Cake', 'Chinese', 'Paneer', 'Fried Rice',
+        'Sandwich', 'Daal', 'Sweets', 'Desserts', 'Khichdi', 'Biryani', 'Juice', 'Tea', 'Lassi'
+      ] %}
+        <div class="category-box" role="button" tabindex="0"
+             onclick="filterByCategory('{{ cat }}')"
+             onkeypress="if(event.key==='Enter'){filterByCategory('{{ cat }}')}">
+          {{ cat }}
+        </div>
+      {% endfor %}
+    </section>
+
+    <section class="filter-section">
+      <div class="toggle-switch">
+        <div id="slider" class="toggle-slider" style="left: 80px;"></div>
+        <div class="toggle-label" id="veg" onclick="setFoodType('Veg')">Veg</div>
+        <div class="toggle-label selected" id="both" onclick="setFoodType('Both')">Both</div>
+        <div class="toggle-label" id="nonveg" onclick="setFoodType('Non-Veg')">Non-Veg</div>
+      </div>
+    </section>
+
+    <section class="shop-list">
+      {% for shop in shops %}
+        {% if shop.status == 'open' %}
+        <div class="shop-card">
+          <img src="{{ shop.logo_url }}" alt="Logo" class="shop-logo" loading="lazy">
+          <h3>{{ shop.name }}</h3>
+          <p>{{ shop.description }}</p>
+          <p>Status: {{ shop.status }}</p>
+          <a href="{{ url_for('customer_shop_menu', shop_id=shop.id) }}" class="btn">Show Menu</a>
+
+          {% if shop.menu %}
+          <div class="menu">
+            <h4>Menu</h4>
+            {% for item in shop.menu %}
+              <div class="menu-item">
+                <span>{{ item.name }} ({{ item.category }}) - ₹{{ item.price }}</span>
+                <button class="btn">Add to Cart</button>
+              </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+    <div class="footer-links">
+      <a href="{{ url_for('index') }}">Home</a> |
+      <a href="{{ url_for('about_us') }}">About Us</a> |
+      <a href="{{ url_for('contact_us') }}">Contact Us</a> |
+      <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+
+  <script>
+    function filterByCategory(category) {
+      const encoded = encodeURIComponent(category);
+      window.location.href = `/category_items/${encoded}`;
+    }
+
+    function setFoodType(type) {
+      const slider = document.getElementById('slider');
+      const veg = document.getElementById('veg');
+      const both = document.getElementById('both');
+      const nonveg = document.getElementById('nonveg');
+
+      veg.classList.remove('selected');
+      both.classList.remove('selected');
+      nonveg.classList.remove('selected');
+
+      if (type === 'Veg') {
+        slider.style.left = '0px';
+        veg.classList.add('selected');
+      } else if (type === 'Both') {
+        slider.style.left = '80px';
+        both.classList.add('selected');
+      } else {
+        slider.style.left = '160px';
+        nonveg.classList.add('selected');
+      }
+
+      setTimeout(() => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('type', type);
+        window.location.href = url.toString();
+      }, 150);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ category }} Items | Campus Bites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='your_css_file.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #f9f6f1, #fefefe);
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1c2331, #2c3e50);
+            color: #fff;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .logo h1 {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-actions a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-actions a:hover {
+            color: #ffd194;
+        }
+
+        .container {
+            max-width: 1200px; /* Increased container width */
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            font-size: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+        }
+
+        .item-card {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .shop-name {
+            font-size: 0.95rem;
+            color: #666;
+            margin: 0.25rem 0 0.5rem 0;
+        }
+
+        .item-category {
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #2ecc71;
+            margin: 0.5rem 0;
+        }
+
+        .add-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #2c3e50;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        .back-link {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 1rem 2rem;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #2c3e50;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        footer {
+            background: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 4rem;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffd194;
+        }
+    </style>
+
+    <script>
+        function dismissFlashMessages() {
+            const flashMessages = document.querySelectorAll('.alert');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 1000);
+                }, 5000);
+            });
+        }
+        window.onload = dismissFlashMessages;
+    </script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <h1>Campus Bites</h1>
+        </div>
+        <div class="nav-actions">
+            <a href="/customer_profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="{{ url_for('browse_shops') }}" class="back-link">← Back to Browse Shops</a>
+
+        <h1 class="header">{{ category }} Items</h1>
+
+        <div class="item-grid">
+            {% for entry in items %}
+            <div class="item-card">
+                <div>
+                    <div class="item-title">{{ entry.item.item_name }}</div>
+                    <div class="shop-name">from {{ entry.shop.shop_name }}</div>
+                    <div class="item-category">{{ entry.item.category }}</div>
+                    <div class="price">
+                        ₹{{ entry.item.serving_options[0].price if entry.item.serving_options else "N/A" }}
+                    </div>
+                </div>
+                {% if entry.item.serving_options %}
+                <form action="{{ url_for('add_to_cart', menu_item_id=entry.item.id, serving_option_id=entry.item.serving_options[0].id) }}" method="post">
+                    <button type="submit" class="add-btn">Add to Cart</button>
+                </form>
+                {% else %}
+                <div style="color:#999;font-size:0.9rem;margin-top:0.5rem;">No serving options</div>
+                {% endif %}
+            </div>
+            {% else %}
+            <p style="padding:1rem;">No {{ category }} items found from open shops.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+        <div class="footer-links">
+            <a href="{{ url_for('index') }}">Home</a> |
+            <a href="{{ url_for('about_us') }}">About Us</a> |
+            <a href="{{ url_for('contact_us') }}">Contact Us</a> |
+            <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+        </div>
+    </footer>
+</body>
+</html>

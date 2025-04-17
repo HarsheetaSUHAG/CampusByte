@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Campus Bites - Customer Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #f9f6f1, #fefefe);
+      color: #2c3e50;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: linear-gradient(90deg, #1c2331, #2c3e50);
+      color: #fff;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar .logo h1 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-actions a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-actions a:hover {
+      color: #ffd194;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .flash-messages {
+      max-width: 600px;
+      margin: 1rem auto;
+      text-align: center;
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 10px;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .alert-success { background: #2ecc71; color: #fff; }
+    .alert-danger { background: #e74c3c; color: #fff; }
+    .alert-info { background: #3498db; color: #fff; }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+    }
+
+    .card h2 {
+      color: #34495e;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+      color: #2c3e50;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    }
+
+    footer {
+      background: #2c3e50;
+      color: #fff;
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 4rem;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffd194;
+    }
+  </style>
+
+  <script>
+    function dismissFlashMessages() {
+      const flashMessages = document.querySelectorAll('.alert');
+      flashMessages.forEach(message => {
+        setTimeout(() => {
+          message.style.opacity = '0';
+          setTimeout(() => {
+            message.style.display = 'none';
+          }, 1000);
+        }, 5000);
+      });
+    }
+    window.onload = dismissFlashMessages;
+  </script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <h1>Campus Bites</h1>
+    </div>
+    <div class="nav-actions">
+      <a href="/customer_profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1 style="text-align:center; margin-bottom: 1.5rem;">Customer Dashboard</h1>
+
+    <div class="flash-messages">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="dashboard">
+      <div class="card">
+        <h2>Browse Restaurants</h2>
+        <p>Explore various campus restaurants and their menus.</p>
+        <a href="{{ url_for('browse_shops') }}" class="btn">Start Browsing</a>
+      </div>
+      <div class="card">
+        <h2>My Orders</h2>
+        <p>View your current and past orders.</p>
+        <a href="{{ url_for('customer_orders') }}" class="btn">View Orders</a>
+      </div>
+      <div class="card">
+        <h2>Favorites</h2>
+        <p>See your favorite dishes and restaurants.</p>
+        <a href="{{ url_for('customer_favorites') }}" class="btn">View Favorites</a>
+      </div>
+      <div class="card">
+        <h2>Order Queue</h2>
+        <p>Track the status of your active orders.</p>
+        <a href="{{ url_for('track_order') }}" class="btn">Track Order</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Campus Bites. Made with ❤️ to bring students and campus dining together.</p>
+    <div class="footer-links">
+      <a href="{{ url_for('index') }}">Home</a> |
+      <a href="{{ url_for('about_us') }}">About Us</a> |
+      <a href="{{ url_for('contact_us') }}">Contact Us</a> |
+      <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>
+

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Owner Profile - Campus Bites</title>
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='op.css') }}">
+  <style>
+    /* General Styles */
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3e8e2;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #5a4234;
+      color: #fff;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar .logo h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-actions a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .nav-actions a:hover {
+      color: #d8a47f;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .flash {
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .flash.success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .flash.error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .profile-status {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      background: #ddd;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 20px;
+      margin-top: 10px;
+    }
+
+    .progress {
+      background: #d8a47f;
+      height: 100%;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      line-height: 20px;
+    }
+
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    fieldset {
+      border: none;
+      background: #f9f1ec;
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+
+    legend {
+      font-weight: bold;
+      color: #5a4234;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+
+    input[type="text"], input[type="email"], input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: #d8a47f;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background: #b98966;
+    }
+
+    .back-button {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      background: #5a4234;
+      color: white;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .back-button:hover {
+      background: #3d2a21;
+    }
+
+    img {
+      display: block;
+      margin: 10px auto;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #5a4234;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #d8a47f;
+    }
+
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <h1>Campus Bites</h1>
+    </div>
+    <div class="nav-actions">
+      <a href="/owner_profile">Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+  </header>
+  
+  <div class="container">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Profile Completion Status -->
+    <section class="profile-status">
+      <h3>Profile Completion: {{ profile_completion }}%</h3>
+      <div class="progress-bar">
+        <div class="progress" style="width: {{ profile_completion }}%;">
+          {{ profile_completion }}%
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile Form -->
+    <section class="profile-form">
+      <form method="POST" enctype="multipart/form-data">
+        <!-- Basic Details (read-only) -->
+        <fieldset disabled>
+          <legend>Basic Details</legend>
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="name" value="{{ owner.name }}">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" value="{{ owner.email }}">
+          <label for="campus">Campus:</label>
+          <input type="text" id="campus" name="campus" value="{{ owner.campus }}">
+        </fieldset>
+        
+        <!-- Additional Details -->
+        <fieldset>
+          <legend>Additional Details</legend>
+          <label for="mobile_number">Mobile Number:</label>
+          <input type="text" id="mobile_number" name="mobile_number" value="{{ owner.mobile_number or '' }}" placeholder="Enter mobile number">
+          
+          <label for="upi_number">UPI Number:</label>
+          <input type="text" id="upi_number" name="upi_number" value="{{ owner.upi_number or '' }}" placeholder="Enter UPI number">
+          
+          <label for="upi_id">UPI ID:</label>
+          <input type="text" id="upi_id" name="upi_id" value="{{ owner.upi_id or '' }}" placeholder="Enter UPI ID">
+          
+          <label for="qr_image">QR Image:</label>
+          <input type="file" id="qr_image" name="qr_image">
+          {% if owner.qr_image %}
+            <p>Current QR Image:</p>
+            <img src="{{ url_for('static', filename='uploads/' ~ owner.qr_image) }}" alt="QR Image" width="150">
+          {% endif %}
+        </fieldset>
+        <button type="submit">Save Profile</button>
+        <a href="{{ url_for('owner_dashboard') }}" class="back-button">Back to Dashboard</a>
+      </form>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Campus Bites. Made with ❤️ for campus dining.</p>
+  </footer>
+</body>
+</html>

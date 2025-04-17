@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>In-Progress Orders | Campus Bites</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='your_css_file.css') }}">
+    <style>
+        body {
+            font-family:'Segoe UI',sans-serif;
+            background:#f9f9f9;
+            margin:0;
+            padding:0;
+        }
+
+        .header {
+            text-align:center;
+            font-size:2rem;
+            margin:1.5rem 0;
+        }
+
+        .order-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+            gap:1.5rem;
+            padding:1rem 2rem;
+        }
+
+        .order-card {
+            background:white;
+            padding:1.2rem;
+            border-radius:1rem;
+            box-shadow:0 2px 6px rgba(0,0,0,0.1);
+            display:flex;
+            flex-direction:column;
+        }
+
+        .order-card p {
+            margin:0.4rem 0;
+            font-size:0.95rem;
+            color:#444;
+        }
+
+        ul {
+            margin:0.5rem 0;
+            padding-left:1.2rem;
+        }
+
+        .status {
+            font-weight:600;
+            color:#1565c0;
+        }
+
+        .btn-form {
+            margin-top:1rem;
+        }
+
+        .btn-form button {
+            width:100%;
+            padding:0.6rem;
+            font-size:0.95rem;
+            font-weight:500;
+            border:none;
+            border-radius:0.4rem;
+            background:#2e7d32;
+            color:white;
+            cursor:pointer;
+            transition:background 0.3s ease;
+        }
+
+        .btn-form button:hover {
+            background:#1b5e20;
+        }
+
+        .back-link {
+            margin:1rem 2rem;
+            display:inline-block;
+            color:#2e7d32;
+            text-decoration:none;
+            font-weight:500;
+        }
+    </style>
+</head>
+<body>
+    <a href="{{ url_for('owner_dashboard') }}" class="back-link">← Back to Dashboard</a>
+
+    <h1 class="header">In-Progress Orders</h1>
+
+    <div class="order-grid">
+        {% for order in accepted_orders %}
+        <div class="order-card">
+            <p><strong>Shop:</strong> {{ order.shop.name }}</p>
+            <p><strong>Customer:</strong> {{ order.customer.name }}</p>
+            <p><strong>Status:</strong> <span class="status">In Progress</span></p>
+
+            <p><strong>Items:</strong></p>
+            <ul>
+                {% for item in order.items %}
+                    <li>{{ item.quantity }} × {{ item.name }} ({{ item.serving }}) - ₹{{ item.price }}</li>
+                {% endfor %}
+            </ul>
+
+            <p><strong>Total:</strong> ₹{{ order.total_price }}</p>
+
+            <div class="btn-form">
+                <form action="{{ url_for('mark_ready', order_id=order.id) }}" method="post">
+                    <button type="submit">Mark as Ready to Pick Up</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <p style="padding:1rem;">No in-progress orders right now.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
